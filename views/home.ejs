@@ -1,6 +1,9 @@
 <%- include("partials/header") -%>
 
 <h1>Home</h1>
-<%= startingText %>
+    <% posts.forEach(function(post){ %>
+        <h3><%=post.userInputTitle%></h3>
+        <p><%=post.userInputPost%></p>
+    <% }) %>
 
 <%- include("partials/footer") -%>
