@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const _ = require("lodash");
 
 const port = 3000
 
@@ -18,7 +19,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.get("/", function(req, res){
-  res.render("home", {posts: posts});
+  res.render("home", {homeText: homeStartingContent, posts: posts});
 });
 
 app.get("/about", function(req, res){
@@ -46,8 +47,19 @@ app.post("/compose", function(req, res){
   res.redirect("/");
 })
 
+app.get("/posts/:postName", function(req, res){
+  const postTitle = _.lowerCase(req.params.postName)
+  
+  posts.forEach(function(post){
+    if(_.lowerCase(post.userInputTitle) === postTitle){
+      res.render("post", {
+        postTitle: post.userInputTitle,
+        postText: post.userInputPost
+      });
+    }
+  })
+})
 
-
-app.listen(port, function() {
+app.listen(port, function(){
   console.log("Server started on port " + port);
 });
